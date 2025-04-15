@@ -3,10 +3,7 @@ import { useState } from "react"
 import {
   Home,
   Receipt,
-  Plane,
-  BadgeCheck,
   Settings,
-  Phone,
   Menu,
 } from "lucide-react"
 import { Avatar, AvatarImage, AvatarFallback } from "../components/ui/avatar"
@@ -20,10 +17,9 @@ import {
 const navItems = [
   { name: "Home", icon: Home },
   { name: "Expenses", icon: Receipt },
-  { name: "Trips", icon: Plane },
-  { name: "Approvals", icon: BadgeCheck },
   { name: "Settings", icon: Settings },
-  { name: "Support", icon: Phone },
+  { name: "About", icon: Settings },
+
 ]
 
 export default function Sidebar() {
@@ -85,14 +81,11 @@ export default function Sidebar() {
             </button>
           </DrawerTrigger>
           <DrawerContent
-  side="left"
-  className="p-0 h-screen w-[75vw] max-w-[260px] bg-[#0f0f0f] border-none"
->
-  <SidebarContent onLinkClick={() => document.activeElement.blur()} />
-</DrawerContent>
-
-
-
+            side="left"
+            className="p-0 h-screen w-[75vw] max-w-[260px] bg-[#0f0f0f] border-none"
+          >
+            <SidebarContent onLinkClick={() => document.activeElement.blur()} />
+          </DrawerContent>
         </Drawer>
       </div>
 
