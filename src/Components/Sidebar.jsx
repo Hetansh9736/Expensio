@@ -1,41 +1,39 @@
-// src/components/Sidebar.jsx
 import { useState } from "react"
 import {
   Home,
   Receipt,
   Settings,
   Menu,
+  Info, 
 } from "lucide-react"
 import { Avatar, AvatarImage, AvatarFallback } from "../components/ui/avatar"
 import {
   Drawer,
   DrawerTrigger,
   DrawerContent,
-  DrawerClose,
 } from "../components/ui/drawer"
 
 const navItems = [
   { name: "Home", icon: Home },
   { name: "Expenses", icon: Receipt },
   { name: "Settings", icon: Settings },
-  { name: "About", icon: Settings },
-
+  { name: "About", icon: Info }, 
 ]
 
 export default function Sidebar() {
   const [active, setActive] = useState("Home")
 
   const SidebarContent = ({ onLinkClick }) => (
-    <div className="h-full w-64 bg-[#0f0f0f] text-white flex flex-col justify-between px-4 py-6">
-      {/* Avatar */}
+    <div className="h-full w-64 bg-[#0f0f0f] text-white flex flex-col justify-between px-5 py-6">
+      {/* Profile */}
       <div>
-        <div className="flex items-center gap-3 mb-10">
-          <Avatar>
+        <div className="flex items-center gap-4 mb-10">
+          <Avatar className="h-10 w-10">
             <AvatarImage src="https://via.placeholder.com/40" />
-            <AvatarFallback className="text-black font-bold">HS</AvatarFallback>
+            <AvatarFallback className="text-black font-semibold text-lg">HS</AvatarFallback>
           </Avatar>
           <div>
-            <p className="text-sm font-medium">Hetansh Sachaniya</p>
+            <p className="text-base font-semibold leading-tight">Hetansh Sachaniya</p>
           </div>
         </div>
 
@@ -48,31 +46,32 @@ export default function Sidebar() {
                 setActive(name)
                 onLinkClick?.()
               }}
-              className={`flex items-center gap-3 px-4 py-2 rounded-md text-sm font-medium transition-colors w-full text-left ${active === name
-                ? "bg-[#1a1a1a] text-teal-400"
-                : "hover:bg-[#1f1f1f] text-gray-300"
+              className={`flex items-center gap-4 px-4 py-2 rounded-lg text-[15px] font-medium transition w-full text-left ${active === name
+                  ? "bg-[#1a1a1a] text-teal-400"
+                  : "hover:bg-[#1f1f1f] text-gray-300"
                 }`}
             >
-              <Icon size={18} />
+              <Icon size={20} />
               {name}
             </button>
           ))}
         </nav>
       </div>
 
-      {/* Branding */}
+      {/* Logo */}
       <div className="text-center">
-        <h1 className="font-bold text-xl tracking-wider">
-          <span className="text-teal-400">EXPEN</span>
-          <span className="text-white">SIO</span>
+        <h1 className="font-bold text-3xl tracking-wide bg-gradient-to-r text-transparent bg-clip-text from-teal-400 to-blue-500">
+          <span>EXPEN</span>
+          <span className="text-white text-3xl font-semibold tracking-wider">SIO</span>
         </h1>
+
       </div>
     </div>
   )
 
   return (
     <>
-      {/* Mobile: Drawer */}
+      {/* Mobile Drawer */}
       <div className="md:hidden fixed top-4 left-4 z-50">
         <Drawer direction="left">
           <DrawerTrigger asChild>
@@ -89,7 +88,7 @@ export default function Sidebar() {
         </Drawer>
       </div>
 
-      {/* Desktop: Fixed Sidebar */}
+      {/* Desktop Sidebar */}
       <div className="hidden md:flex fixed left-0 top-0 h-screen w-64 z-40">
         <SidebarContent />
       </div>
