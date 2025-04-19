@@ -1,6 +1,7 @@
 import React from "react"
 import Sidebar from "./Sidebar"
 import Home from "./Home"
+import Auth from './auth'
 
 export default function Dashboard() {
   return (
@@ -10,5 +11,6 @@ export default function Dashboard() {
         <Home />
       </main>
     </div>
+    // <Auth/>  
   )
 }

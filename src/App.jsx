@@ -1,5 +1,5 @@
 import React from 'react'
-import { Auth } from "./Components/auth"
+import  Auth  from "./Components/auth"
 import Dashboard from './Components/Dashboard'
 
 function App() {

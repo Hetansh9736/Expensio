@@ -1,10 +1,13 @@
 import { useState } from "react"
 import {
   Home,
-  Receipt,
+  BarChart,
+  FileText,
+  Calculator,
+  HandCoins,
+  Wallet,
   Settings,
   Menu,
-  Info, 
 } from "lucide-react"
 import { Avatar, AvatarImage, AvatarFallback } from "../components/ui/avatar"
 import {
@@ -15,10 +18,14 @@ import {
 
 const navItems = [
   { name: "Home", icon: Home },
-  { name: "Expenses", icon: Receipt },
+  { name: "Analysis", icon: BarChart },        
+  { name: "Reports", icon: FileText },     
+  { name: "EMI Planner", icon: Calculator },
+  { name: "Loans & Borrows", icon: HandCoins }, 
+  { name: "Dues", icon: Wallet },   
   { name: "Settings", icon: Settings },
-  { name: "About", icon: Info }, 
-]
+];
+
 
 export default function Sidebar() {
   const [active, setActive] = useState("Home")
@@ -34,7 +41,7 @@ export default function Sidebar() {
           </Avatar>
           <div>
             <p className="text-base font-semibold leading-tight">Hetansh Sachaniya</p>
-          </div>
+          </div>  
         </div>
 
         {/* Navigation */}
