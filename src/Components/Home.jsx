@@ -39,7 +39,7 @@ export default function Home() {
 
   const [incomeInput, setIncomeInput] = useState({
     amount: "",
-    source: "",
+    category: "",
     date: new Date(),
   })
 
@@ -49,10 +49,13 @@ export default function Home() {
     category: "",
   })
 
+  const [isIncomeOpen, setIsIncomeOpen] = useState(false)
+  const [isExpenseOpen, setIsExpenseOpen] = useState(false)
+  const [isReceiptOpen, setIsReceiptOpen] = useState(false)
+
   const totalExpense = 1200
   const totalIncome = 2000
   const remainingBudget = totalIncome - totalExpense
-  const budgetUsage = (totalExpense / totalIncome) * 100
 
   const handleAddExpense = () => {
     console.log("Expense:", expenseInput)
@@ -61,7 +64,7 @@ export default function Home() {
 
   const handleAddIncome = () => {
     console.log("Income:", incomeInput)
-    setIncomeInput({ amount: "", source: "" })
+    setIncomeInput({ ...incomeInput, amount: "", category: "", date: new Date() })
   }
 
   const handleAddReceipt = () => {
@@ -71,7 +74,7 @@ export default function Home() {
 
   return (
     <div className="grid gap-8 grid-cols-1 xl:grid-cols-2 text-white font-sans">
-      {/* Overview Summary */}
+      {/* Overview */}
       <Card className="col-span-1 xl:col-span-2 bg-[#141414] border border-[#2a2a2a]">
         <CardContent className="p-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
           {[
@@ -90,53 +93,47 @@ export default function Home() {
         </CardContent>
       </Card>
 
-      {/* Quick Actions with Dialogs */}
+      {/* Quick Actions */}
       <Card className="col-span-full bg-[#1a1a1a] border border-[#2a2a2a] shadow rounded-2xl">
         <CardContent className="p-8 space-y-6">
           <h3 className="text-2xl font-semibold text-teal-400 tracking-tight">Quick Action</h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {/* Add Income */}
-            <Dialog>
+            <Dialog open={isIncomeOpen} onOpenChange={setIsIncomeOpen}>
               <DialogTrigger asChild>
-                <Button className="w-full bg-[#1f1f1f] hover:bg-[#2a2a2a] border border-[#333] text-white text-lg font-medium p-6">
+                <Button
+                  className="w-full bg-[#1f1f1f] hover:bg-[#2a2a2a] border border-[#333] text-white text-lg font-medium p-6"
+                >
                   + Add Income
                 </Button>
               </DialogTrigger>
-
               <DialogContent className="bg-[#141414] text-white border border-[#2a2a2a] rounded-2xl px-8 py-6 max-w-md shadow-xl">
                 <DialogHeader className="mb-4">
                   <DialogTitle className="text-2xl font-bold text-green-400">Add New Income</DialogTitle>
                 </DialogHeader>
 
                 <div className="space-y-6">
-                  {/* Amount */}
                   <div className="space-y-1">
                     <label className="text-md font-semibold text-gray-300">Amount</label>
                     <Input
                       placeholder="e.g. 5000"
-                      className="bg-[#1f1f1f] text-white text-base py-3 border border-[#333] focus-visible:ring-1 focus-visible:ring-green-400"
+                      className="bg-[#1f1f1f] text-white py-3 border border-[#333]"
                       value={incomeInput.amount}
                       onChange={(e) => setIncomeInput({ ...incomeInput, amount: e.target.value })}
-                      required
                     />
                   </div>
 
-                  {/* Category */}
                   <div className="space-y-1">
                     <label className="text-md font-semibold text-gray-300">Category</label>
                     <Select
                       onValueChange={(value) => setIncomeInput({ ...incomeInput, category: value })}
                     >
-                      <SelectTrigger className="w-full bg-[#1f1f1f] text-white text-base py-3 border border-[#333]">
+                      <SelectTrigger className="w-full bg-[#1f1f1f] text-white py-3 border border-[#333]">
                         <SelectValue placeholder="Select a category" />
                       </SelectTrigger>
-                      <SelectContent className="bg-[#1f1f1f] text-white border border-[#2a2a2a]">
+                      <SelectContent className="bg-[#1f1f1f] border border-[#2a2a2a] text-white">
                         {["Salary", "Freelance", "Investments", "Bonus", "Refund", "Other"].map((cat) => (
-                          <SelectItem
-                            key={cat}
-                            value={cat}
-                            className="hover:bg-[#2a2a2a] focus:bg-green-500 focus:text-white data-[state=checked]:bg-green-500 data-[state=checked]:text-white cursor-pointer"
-                          >
+                          <SelectItem key={cat} value={cat}>
                             {cat}
                           </SelectItem>
                         ))}
@@ -144,109 +141,20 @@ export default function Home() {
                     </Select>
                   </div>
 
-                  {/* Date */}
                   <div className="space-y-1">
                     <label className="text-md font-semibold text-gray-300">Date</label>
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button
                           variant="outline"
-                          className="w-full justify-start text-left bg-[#1f1f1f] text-white text-base py-3 border border-[#333] hover:bg-[#2a2a2a] hover:text-white"
+                          className="w-full justify-start bg-[#1f1f1f] text-white py-3 border border-[#333]"
                         >
                           <CalendarIcon className="mr-2 h-5 w-5 opacity-70" />
                           {format(incomeInput.date, "PPP")}
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0 bg-[#141414] text-white border border-[#333]">
-                        <Calendar
-                          mode="single"
-                          selected={incomeInput.date}
-                          onSelect={(date) =>
-                            date && setIncomeInput({ ...incomeInput, date })
-                          }
-                          className="rounded-md bg-[#1f1f1f] text-white"
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                  </div>
-                </div>
-
-                <DialogFooter className="mt-6">
-                  <Button
-                    onClick={handleAddIncome}
-                    className="w-full bg-green-600 hover:bg-green-500 text-green-50 text-md font-semibold py-3 rounded-xl"
-                  >
-                    Add Income
-                  </Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-
-
-            {/* Add Expense */}
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button className="w-full bg-[#1f1f1f] hover:bg-[#2a2a2a] border border-[#333] text-white text-lg font-medium p-6">
-                  + Add Expenses
-                </Button>
-              </DialogTrigger>
-
-              <DialogContent className="bg-[#141414] text-white border border-[#2a2a2a] rounded-2xl px-8 py-6 max-w-md shadow-xl">
-                <DialogHeader className="mb-4">
-                  <DialogTitle className="text-2xl font-bold text-red-400">Add New Expense</DialogTitle>
-                </DialogHeader>
-
-                <div className="space-y-6">
-                  {/* Amount */}
-                  <div className="space-y-1">
-                    <label className="text-md font-semibold text-gray-300">Amount</label>
-                    <Input
-                      placeholder="e.g. 250"
-                      className="bg-[#1f1f1f] text-white text-base py-3 border border-[#333] focus-visible:ring-1 focus-visible:ring-gray-400"
-                      value={expenseInput.amount}
-                      onChange={(e) => setExpenseInput({ ...expenseInput, amount: e.target.value })}
-                    />
-                  </div>
-
-                  {/* Category */}
-                  <div className="space-y-1">
-                    <label className="text-md font-semibold text-gray-300">Category</label>
-                    <Select
-                      onValueChange={(value) => setExpenseInput({ ...expenseInput, category: value })}
-                    >
-                      <SelectTrigger className="w-full bg-[#1f1f1f] text-white text-base py-3 border border-[#333]">
-                        <SelectValue placeholder="Select a category" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-[#1f1f1f] text-white border border-[#2a2a2a]">
-                        {["Food", "Travel", "Shopping", "Bills", "Supplies", "Health", "Entertainment", "Other"].map((cat) => (
-                          <SelectItem
-                            key={cat}
-                            value={cat}
-                            className="hover:bg-[#2a2a2a] focus:bg-red-500 focus:text-white data-[state=checked]:bg-red-500 data-[state=checked]:text-white cursor-pointer"
-                          >
-                            {cat}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {/* Date */}
-                  <div className="space-y-1">
-                    <label className="text-md font-semibold text-gray-300">Date</label>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          className="w-full justify-start text-left bg-[#1f1f1f] text-white text-base py-3 border border-[#333] hover:bg-[#2a2a2a] hover:text-white"
-                        >
-                          <CalendarIcon className="mr-2 h-5 w-5 opacity-70" />
-                          {format(expenseInput.date, "PPP")}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0 bg-[#141414] text-white border border-[#333]">
-                        <Calendar
+                      <PopoverContent className="border-none bg-[#1f1f1f]">
+                      <Calendar
                           mode="single"
                           selected={expenseInput.date}
                           onSelect={(date) =>
@@ -255,6 +163,7 @@ export default function Home() {
                           className="rounded-md bg-[#1f1f1f] text-white"
                           initialFocus
                         />
+
                       </PopoverContent>
                     </Popover>
                   </div>
@@ -262,8 +171,94 @@ export default function Home() {
 
                 <DialogFooter className="mt-6">
                   <Button
-                    onClick={handleAddExpense}
-                    className="w-full bg-red-400 hover:bg-red-500 text-teal-50 text-md font-semibold py-3 rounded-xl"
+                    onClick={() => {
+                      handleAddIncome()
+                      setIsIncomeOpen(false)
+                    }}
+                    className="w-full bg-green-600 hover:bg-green-500 text-white py-3"
+                  >
+                    Add Income
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+
+            {/* Add Expense */}
+            <Dialog open={isExpenseOpen} onOpenChange={setIsExpenseOpen}>
+              <DialogTrigger asChild>
+                <Button className="w-full bg-[#1f1f1f] hover:bg-[#2a2a2a] border border-[#333] text-white text-lg font-medium p-6">
+                  + Add Expenses
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="bg-[#141414] text-white border border-[#2a2a2a] rounded-2xl px-8 py-6 max-w-md shadow-xl">
+                <DialogHeader className="mb-4">
+                  <DialogTitle className="text-2xl font-bold text-red-400">Add New Expense</DialogTitle>
+                </DialogHeader>
+
+                <div className="space-y-6">
+                  <div className="space-y-1">
+                    <label className="text-md font-semibold text-gray-300">Amount</label>
+                    <Input
+                      placeholder="e.g. 250"
+                      className="bg-[#1f1f1f] text-white py-3 border border-[#333]"
+                      value={expenseInput.amount}
+                      onChange={(e) => setExpenseInput({ ...expenseInput, amount: e.target.value })}
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-md font-semibold text-gray-300">Category</label>
+                    <Select
+                      onValueChange={(value) => setExpenseInput({ ...expenseInput, category: value })}
+                    >
+                      <SelectTrigger className="w-full bg-[#1f1f1f] text-white py-3 border border-[#333]">
+                        <SelectValue placeholder="Select a category" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-[#1f1f1f] border border-[#2a2a2a] text-white">
+                        {["Food", "Travel", "Shopping", "Bills", "Supplies", "Health", "Entertainment", "Other"].map((cat) => (
+                          <SelectItem key={cat} value={cat}>
+                            {cat}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-md font-semibold text-gray-300">Date</label>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className="w-full justify-start bg-[#1f1f1f] text-white py-3 border border-[#333]"
+                        >
+                          <CalendarIcon className="mr-2 h-5 w-5 opacity-70" />
+                          {format(expenseInput.date, "PPP")}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="border-none bg-[#1f1f1f]">
+                      <Calendar
+                          mode="single"
+                          selected={expenseInput.date}
+                          onSelect={(date) =>
+                            date && setExpenseInput({ ...expenseInput, date })
+                          }
+                          className="rounded-md bg-[#1f1f1f] text-white"
+                          initialFocus
+                        />
+
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+                </div>
+
+                <DialogFooter className="mt-6">
+                  <Button
+                    onClick={() => {
+                      handleAddExpense()
+                      setIsExpenseOpen(false)
+                    }}
+                    className="w-full bg-red-500 hover:bg-red-400 text-white py-3"
                   >
                     Add Expense
                   </Button>
@@ -272,7 +267,7 @@ export default function Home() {
             </Dialog>
 
             {/* Add Receipt */}
-            <Dialog>
+            <Dialog open={isReceiptOpen} onOpenChange={setIsReceiptOpen}>
               <DialogTrigger asChild>
                 <Button className="w-full bg-[#1f1f1f] hover:bg-[#2a2a2a] border border-[#333] text-white text-lg font-medium p-6">
                   + Add Receipt
@@ -284,11 +279,8 @@ export default function Home() {
                 </DialogHeader>
 
                 <div className="space-y-6">
-                  {/* File Upload */}
-                  {/* Custom File Upload */}
                   <div className="space-y-2">
                     <label className="text-md font-semibold text-gray-300">Upload File</label>
-
                     <div className="relative">
                       <input
                         id="fileUpload"
@@ -304,18 +296,15 @@ export default function Home() {
                         }}
                         className="hidden"
                       />
-
                       <label
                         htmlFor="fileUpload"
-                        className="block w-full cursor-pointer bg-[#1f1f1f] text-white text-base py-3 px-4 border border-[#333] rounded-md hover:bg-[#2a2a2a] transition"
+                        className="block w-full cursor-pointer bg-[#1f1f1f] text-white py-3 px-4 border border-[#333] rounded-md hover:bg-[#2a2a2a]"
                       >
                         {receiptInput.file ? `Selected: ${receiptInput.file.name}` : "Choose File"}
                       </label>
                     </div>
                   </div>
 
-
-                  {/* Description */}
                   <div className="space-y-1">
                     <label className="text-md font-semibold text-gray-300">Description</label>
                     <Input
@@ -324,11 +313,10 @@ export default function Home() {
                       onChange={(e) =>
                         setReceiptInput({ ...receiptInput, description: e.target.value })
                       }
-                      className="bg-[#1f1f1f] text-white text-base py-3 border border-[#333]"
+                      className="bg-[#1f1f1f] text-white py-3 border border-[#333]"
                     />
                   </div>
 
-                  {/* Category */}
                   <div className="space-y-1">
                     <label className="text-md font-semibold text-gray-300">Category</label>
                     <Select
@@ -336,16 +324,12 @@ export default function Home() {
                         setReceiptInput({ ...receiptInput, category: value })
                       }
                     >
-                      <SelectTrigger className="w-full bg-[#1f1f1f] text-white text-base py-3 border border-[#333]">
+                      <SelectTrigger className="w-full bg-[#1f1f1f] text-white py-3 border border-[#333]">
                         <SelectValue placeholder="Select a category" />
                       </SelectTrigger>
                       <SelectContent className="bg-[#1f1f1f] text-white border border-[#2a2a2a]">
                         {["Borrow", "Due"].map((cat) => (
-                          <SelectItem
-                            key={cat}
-                            value={cat}
-                            className="hover:bg-[#2a2a2a] focus:bg-blue-500 focus:text-white data-[state=checked]:bg-blue-500 data-[state=checked]:text-white cursor-pointer"
-                          >
+                          <SelectItem key={cat} value={cat}>
                             {cat}
                           </SelectItem>
                         ))}
@@ -356,8 +340,11 @@ export default function Home() {
 
                 <DialogFooter className="mt-6">
                   <Button
-                    onClick={handleAddReceipt}
-                    className="w-full bg-blue-600 hover:bg-blue-500 text-blue-50 text-md font-semibold py-3 rounded-xl"
+                    onClick={() => {
+                      handleAddReceipt()
+                      setIsReceiptOpen(false)
+                    }}
+                    className="w-full bg-blue-600 hover:bg-blue-500 text-white py-3"
                   >
                     Upload Receipt
                   </Button>
