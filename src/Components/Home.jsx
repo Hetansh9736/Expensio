@@ -30,7 +30,7 @@ const recentTransactions = [
   { title: "Printer Paper", amount: 150, category: "Supplies", date: "Apr 12" },
 ]
 
-export default function Home() {
+export default  function Home() {
   const [expenseInput, setExpenseInput] = useState({
     amount: "",
     category: "",
