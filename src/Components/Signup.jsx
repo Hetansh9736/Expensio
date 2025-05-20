@@ -15,7 +15,6 @@ function SignupPage() {
   const handleSignUp = async (e) => {
     e.preventDefault();
 
-    // 1. Sign up the user using Supabase Auth
     const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
       email,
       password,
@@ -32,12 +31,11 @@ function SignupPage() {
       return;
     }
 
-    // 2. Insert firstName and lastName into your 'user' table
     const { error: insertError } = await supabase
       .from("user")
       .insert([
         {
-          id: user.id, // ✅ Must match 'id' in your 'user' table
+          id: user.id,
           firstname: firstName,
           lastname: lastName,
         },
@@ -57,7 +55,7 @@ function SignupPage() {
 
   return (
     <div className="flex h-screen bg-[#141414] p-4 sm:p-0">
-      {/* Left side - Image and branding */}
+      {/* Left - Branding */}
       <div className="relative hidden w-full md:w-1/2 flex-col justify-between lg:flex">
         <img
           src={Brandingimg}
@@ -70,26 +68,26 @@ function SignupPage() {
         </div>
       </div>
 
-      {/* Right side - Form */}
+      {/* Right - Signup form */}
       <div className="flex w-full flex-col justify-center lg:w-1/2 lg:px-12 text-white">
-        <div className="mx-auto w-full max-w-lg sm:max-w-3xl bg-[#1a1a1a] p-8 rounded-xl">
-          <h1 className="mb-6 text-3xl sm:text-4xl font-bold">Create an account</h1>
-          <p className="mb-8 text-lg text-gray-300">
+        <div className="mx-auto w-full max-w-lg sm:max-w-3xl rounded-xl bg-[#1a1a1a] p-8 shadow-lg sm:border-0 sm:bg-transparent sm:shadow-none lg:border-0 lg:bg-transparent lg:shadow-none">
+          <h1 className="mb-6 text-3xl sm:text-4xl font-bold text-white">Create an account</h1>
+          <p className="mb-8 -mt-1 text-lg text-gray-300">
             Already have an account?{" "}
             <Link to="/" className="text-teal-400 hover:underline">Log in</Link>
           </p>
 
-          {message && <p className="text-yellow-400 mb-4">{message}</p>}
+          {message && <span className="text-yellow-400">{message}</span>}
 
-          <form className="space-y-4" onSubmit={handleSignUp}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+          <form className="space-y-4 mt-4" onSubmit={handleSignUp}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <input
                 type="text"
                 name="firstName"
                 placeholder="First name"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
-                className="input-field"
+                className="w-full bg-transparent border border-gray-600 rounded-md px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-teal-400 focus:border-teal-400"
               />
               <input
                 type="text"
@@ -97,7 +95,7 @@ function SignupPage() {
                 placeholder="Last name"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
-                className="input-field"
+                className="w-full bg-transparent border border-gray-600 rounded-md px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-teal-400 focus:border-teal-400"
               />
             </div>
 
@@ -108,7 +106,7 @@ function SignupPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="input-field"
+              className="w-full bg-transparent border border-gray-600 rounded-md px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-teal-400 focus:border-teal-400"
             />
 
             <div className="relative">
@@ -119,12 +117,12 @@ function SignupPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="input-field pr-10"
+                className="w-full bg-transparent border border-gray-600 rounded-md px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-teal-400 focus:border-teal-400 pr-10"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 pr-3 text-gray-400"
+                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400"
               >
                 {showPassword ? <EyeOffIcon /> : <EyeIcon />}
               </button>
@@ -146,7 +144,7 @@ function SignupPage() {
             <button
               type="submit"
               disabled={!agreed}
-              className="w-full bg-teal-500 hover:bg-teal-400 text-white py-3 px-6 rounded-md font-medium"
+              className="w-full bg-teal-500 hover:bg-teal-400 text-white py-3 px-6 rounded-md font-medium disabled:opacity-50"
             >
               Create account
             </button>
@@ -157,11 +155,11 @@ function SignupPage() {
   );
 }
 
-// Icon components
+// Reuse icon components
 function EyeIcon() {
   return (
-    <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12Z" />
       <circle cx="12" cy="12" r="3" />
     </svg>
   );
@@ -169,16 +167,13 @@ function EyeIcon() {
 
 function EyeOffIcon() {
   return (
-    <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
-      <path d="M10.73 5.08C11.5 5 12.24 5 13 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
-      <path d="M6.61 6.61A13.52 13.52 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" />
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M9.88 9.88a3 3 0 0 0 4.24 4.24" />
+      <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
+      <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" />
       <line x1="2" x2="22" y1="2" y2="22" />
     </svg>
   );
 }
-
-// Optional tailwind utility class
-const inputField = `w-full bg-transparent border border-gray-600 rounded-md px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-teal-400`;
 
 export default SignupPage;

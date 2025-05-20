@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 function LandingPage() {
     return (
@@ -11,8 +12,8 @@ function LandingPage() {
             <div className='flex gap-6'>
                 <p>Features</p>
                 <p>About us</p>
-                <p>Login</p>
-                <p className='bg-gradient-to-r from-[#33F9D8] to-[#3478FF] px-3 rounded font-medium cursor-pointer'>Sign up</p>
+                <p><Link to='/Login'>Login</Link></p>
+                <p ><Link to='/Signup' className='bg-gradient-to-r from-[#33F9D8] to-[#3478FF] px-3 rounded font-medium cursor-pointer'>Sign Up</Link></p>
             </div>
         </nav>
     )

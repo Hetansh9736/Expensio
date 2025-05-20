@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { NavLink } from "react-router-dom"
 import {
   Home,
   BarChart,
@@ -17,19 +18,16 @@ import {
 } from "../components/ui/drawer"
 
 const navItems = [
-  { name: "Home", icon: Home },
-  { name: "Analysis", icon: BarChart },        
-  { name: "Reports", icon: FileText },     
-  { name: "EMI Planner", icon: Calculator },
-  { name: "Loans & Borrows", icon: HandCoins }, 
-  { name: "Dues", icon: Wallet },   
-  { name: "Settings", icon: Settings },
-];
-
+  { name: "Home", icon: Home, path: "/Components/Home" },
+  { name: "Analysis", icon: BarChart, path: "/Components/Analysis" },
+  { name: "Reports", icon: FileText, path: "/Components/report" },
+  { name: "EMI Planner", icon: Calculator, path: "/Components/Emi" },
+  { name: "Loans & Borrows", icon: HandCoins, path: "/Components/Borrow" },
+  { name: "Dues", icon: Wallet, path: "/Components/Dues" },
+  { name: "Settings", icon: Settings, path: "/Components/Settings" },
+]
 
 export default function Sidebar() {
-  const [active, setActive] = useState("Home")
-
   const SidebarContent = ({ onLinkClick }) => (
     <div className="h-full w-64 bg-[#0f0f0f] text-white flex flex-col justify-between px-5 py-6">
       {/* Profile */}
@@ -41,26 +39,24 @@ export default function Sidebar() {
           </Avatar>
           <div>
             <p className="text-base font-semibold leading-tight">Hetansh Sachaniya</p>
-          </div>  
+          </div>
         </div>
 
         {/* Navigation */}
         <nav className="flex flex-col gap-2">
-          {navItems.map(({ name, icon: Icon }) => (
-            <button
+          {navItems.map(({ name, icon: Icon, path }) => (
+            <NavLink
               key={name}
-              onClick={() => {
-                setActive(name)
-                onLinkClick?.()
-              }}
-              className={`flex items-center gap-4 px-4 py-2 rounded-lg text-[15px] font-medium transition w-full text-left ${active === name
-                  ? "bg-[#1a1a1a] text-teal-400"
-                  : "hover:bg-[#1f1f1f] text-gray-300"
-                }`}
+              to={`/dashboard/${name === 'Home' ? '' : name.toLowerCase().replace(/ & /g, '').replace(/\s+/g, '')}`}
+              className={({ isActive }) =>
+                `flex items-center gap-4 px-4 py-2 rounded-lg text-[15px] font-medium transition w-full text-left ${isActive ? 'bg-[#1a1a1a] text-teal-400' : 'hover:bg-[#1f1f1f] text-gray-300'
+                }`
+              }
             >
               <Icon size={20} />
               {name}
-            </button>
+            </NavLink>
+
           ))}
         </nav>
       </div>
@@ -71,7 +67,6 @@ export default function Sidebar() {
           <span>EXPEN</span>
           <span className="text-white text-3xl font-semibold tracking-wider">SIO</span>
         </h1>
-
       </div>
     </div>
   )

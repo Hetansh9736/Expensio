@@ -1,24 +1,18 @@
+// Components/DashboardLayout.jsx
 import React from 'react'
 import Sidebar from './Sidebar'
-import LoginPage from './Login'
-import SignUp from './Signup'
-import Borrow from './Borrow'
-import Home from './Home'
-import Analysis from './Analysis'
-import LandingPage from './LandingPage'
+import { Outlet } from 'react-router-dom'
 
-function Dashboard() {
-    return (
-        <div className="flex bg-[#0d0d0d] text-white min-h-screen">
-          <Sidebar />
-          <main className="flex-1 ml-0 md:ml-64 p-4 md:p-6 overflow-y-auto">
-           <Home/>
-          </main>
-        </div>
-        // <LandingPage/>
+const DashboardLayout = () => {
+  return (
+    <div className="flex">
+      <Sidebar />
+     <main className="ml-64 p-6 w-full bg-[#0d0d0d] min-h-screen">
 
-        
-    )
+        <Outlet />
+      </main>
+    </div>
+  )
 }
 
-export default Dashboard
+export default DashboardLayout
