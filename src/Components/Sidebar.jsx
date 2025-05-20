@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { NavLink } from "react-router-dom"
 import {
   Home,
@@ -18,13 +17,13 @@ import {
 } from "../components/ui/drawer"
 
 const navItems = [
-  { name: "Home", icon: Home, path: "/Components/Home" },
-  { name: "Analysis", icon: BarChart, path: "/Components/Analysis" },
-  { name: "Reports", icon: FileText, path: "/Components/report" },
-  { name: "EMI Planner", icon: Calculator, path: "/Components/Emi" },
-  { name: "Loans & Borrows", icon: HandCoins, path: "/Components/Borrow" },
-  { name: "Dues", icon: Wallet, path: "/Components/Dues" },
-  { name: "Settings", icon: Settings, path: "/Components/Settings" },
+  { name: "Home", icon: Home, path: "" },
+  { name: "Analysis", icon: BarChart, path: "analysis" },
+  { name: "Report", icon: FileText, path: "report" },
+  { name: "Emi", icon: Calculator, path: "emi" },
+  { name: "Borrow", icon: HandCoins, path: "borrow" },
+  { name: "Dues", icon: Wallet, path: "dues" },
+  { name: "Settings", icon: Settings, path: "settings" },
 ]
 
 export default function Sidebar() {
@@ -47,16 +46,20 @@ export default function Sidebar() {
           {navItems.map(({ name, icon: Icon, path }) => (
             <NavLink
               key={name}
-              to={`/dashboard/${name === 'Home' ? '' : name.toLowerCase().replace(/ & /g, '').replace(/\s+/g, '')}`}
+              to={`/dashboard/${path}`}
               className={({ isActive }) =>
-                `flex items-center gap-4 px-4 py-2 rounded-lg text-[15px] font-medium transition w-full text-left ${isActive ? 'bg-[#1a1a1a] text-teal-400' : 'hover:bg-[#1f1f1f] text-gray-300'
+                `flex items-center gap-4 px-4 py-2 rounded-lg text-[15px] font-medium transition w-full text-left ${
+                  isActive
+                    ? "bg-[#1a1a1a] text-teal-400"
+                    : "hover:bg-[#1f1f1f] text-gray-300"
                 }`
               }
+              onClick={onLinkClick}
+              end
             >
               <Icon size={20} />
               {name}
             </NavLink>
-
           ))}
         </nav>
       </div>
@@ -74,8 +77,9 @@ export default function Sidebar() {
   return (
     <>
       {/* Mobile Drawer */}
+        {/* Mobile Drawer */}
       <div className="md:hidden fixed top-4 left-4 z-50">
-        <Drawer direction="left">
+        <Drawer direction="left" className="bg-[#0f0f0f]">
           <DrawerTrigger asChild>
             <button className="text-white p-2 bg-[#1a1a1a] rounded-md">
               <Menu size={24} />

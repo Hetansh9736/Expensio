@@ -74,7 +74,7 @@ function SignupPage() {
           <h1 className="mb-6 text-3xl sm:text-4xl font-bold text-white">Create an account</h1>
           <p className="mb-8 -mt-1 text-lg text-gray-300">
             Already have an account?{" "}
-            <Link to="/" className="text-teal-400 hover:underline">Log in</Link>
+            <Link to="/Login" className="text-teal-400 hover:underline">Log in</Link>
           </p>
 
           {message && <span className="text-yellow-400">{message}</span>}

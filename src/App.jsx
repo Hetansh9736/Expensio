@@ -21,16 +21,16 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
 
-        {/* Dashboard Routes with Layout */}
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<Home />} />
-          <Route path="Analysis" element={<Analysis />} />
-          <Route path="Report" element={<Report />} />
-          <Route path="Emi" element={<Emi />} />
-          <Route path="Borrow" element={<Borrow />} />
-          <Route path="Dues" element={<Dues />} />
-          <Route path="Settings" element={<Settings />} />
+          <Route path="analysis" element={<Analysis />} />
+          <Route path="report" element={<Report />} />
+          <Route path="emi" element={<Emi />} />
+          <Route path="borrow" element={<Borrow />} />
+          <Route path="dues" element={<Dues />} />
+          <Route path="settings" element={<Settings />} />
         </Route>
+
       </Routes>
     </BrowserRouter>
   )
