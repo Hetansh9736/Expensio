@@ -12,6 +12,7 @@ import Emi from './Components/Emi'
 import Borrow from './Components/Borrow'
 import Dues from './Components/Dues'
 import Settings from './Components/Settings'
+// test
 
 function App() {
   return (
@@ -30,7 +31,6 @@ function App() {
           <Route path="dues" element={<Dues />} />
           <Route path="settings" element={<Settings />} />
         </Route>
-
       </Routes>
     </BrowserRouter>
   )
